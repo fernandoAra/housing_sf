@@ -24,7 +24,7 @@ twitter_api = tweepy.API(auth)
 client = tweepy.Client(bearer_token)
 
 
-
+#get every person who likes our tweet
 for tweet in tweepy.Cursor(twitter_api.user_timeline, screen_name='housing_sf').items():
     a = client.get_liking_users(id=tweet.id)
 
