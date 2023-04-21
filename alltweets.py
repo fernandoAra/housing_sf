@@ -3,7 +3,7 @@ import json
 from fetch_bills import fetch_housing_bills
 from summarize import summarize_bill
 
-twitter = input('1 = Main Account, 2 = Secondary acount, 3 = Both accounts')
+# twitter = input('1 = Main Account, 2 = Secondary acount, 3 = Both accounts')
 
 # Load API credentials from the config.json file
 with open("config.json") as f:
@@ -14,21 +14,17 @@ consumer_key = config["twitter1"]["consumer_key"]
 consumer_secret = config["twitter1"]["consumer_secret"]
 access_token = config["twitter1"]["access_token"]
 access_token_secret = config["twitter1"]["access_token_secret"]
-
-# GPT-3 API key
-gpt3_api_key = config["openai"]["api_key"]
+bearer_token = config["twitter1"]["bearer_token"]
 
 # Authenticate with the Twitter API
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
 twitter_api = tweepy.API(auth)
 
-# Fetch housing bills 
-# housing_bills = fetch_housing_bills()
-housing_bills = ['Hello everyone, this is a test ;)']
+client = tweepy.Client(bearer_token)
 
-# Loop through the bills and post summaries to Twitter
-for bill in housing_bills:
-    summary = summarize_bill(bill, gpt3_api_key)
-    status = summary[:100]
-    twitter_api.update_status(status)
+# for tweet in tweepy.Cursor(twitter_api.user_timeline, screen_name='housing_sf').items():
+#     print(tweet)
+
+tweets = twitter_api.user_timeline(screen_name='housing_sf')
+print(tweets[0].id)
